@@ -1,0 +1,50 @@
+name: Release Application
+
+on: 
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+
+  Build_Windows_App:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: Use Node.js 20.9.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: '20.9.0'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Github Action
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          yarn config set network-timeout 600000 -g
+          yarn config set httpTimeout 600000
+                    
+      - name: Bump Version
+        run: |
+          npm version patch -m "v%s"
+
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          release: true
+          github_token: ${{ secrets.github_token }}
+        env:
+          CI: false
+          GENERATE_SOURCEMAP: false
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          repository: 'remyar/Daly_Bms_Application'
+          directory: './'
