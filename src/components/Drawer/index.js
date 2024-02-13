@@ -41,6 +41,8 @@ function MyDrawer(props) {
                 </ListItemIcon>
                 <ListItemText primary={intl.formatMessage({ id: 'url.index' })} secondary={intl.formatMessage({ id: 'url.index.desc' })} />
             </ListItem>
+
+            {/*
             <ListItem button onClick={() => {
                 props.navigation.push(routeMdw.urlClients());
                 props.onClose && props.onClose();
@@ -105,9 +107,10 @@ function MyDrawer(props) {
                 </ListItemIcon>
                 <ListItemText primary={intl.formatMessage({ id: 'url.billings' })} secondary={intl.formatMessage({ id: 'url.billings.desc' })} />
             </ListItem>
+        */}
         </List>
         <List sx={{ position: "absolute", bottom: "0px", width: "100%" }}>
-
+{/*
             <ListItem button onClick={() => {
                 props.navigation.push(routeMdw.urlTechnics());
                 props.onClose && props.onClose();
@@ -117,7 +120,7 @@ function MyDrawer(props) {
                 </ListItemIcon>
                 <ListItemText primary={intl.formatMessage({ id: 'url.technics' })} secondary={intl.formatMessage({ id: 'url.technics.desc' })} />
             </ListItem>
-
+        */}
             <ListItem button onClick={() => {
                 props.navigation.push(routeMdw.urlSettings());
                 props.onClose && props.onClose();
