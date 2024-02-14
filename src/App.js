@@ -11,18 +11,20 @@ import Box from '@mui/material/Box';
 
 import AppBar from './components/AppBar';
 import Drawer from './components/Drawer';
+import SettingsPage from './pages/settings';
 
 import electron from 'electron';
+import actions from './actions';
 
 const routes = [
     { path: routeMdw.urlIndex(), name: 'HomePage', Component: <HomePage /> },
     { path: routeMdw.urlHome(), name: 'HomePage', Component: <HomePage /> },
+    { path: routeMdw.urlSettings(), name: 'settingsPage', Component: <SettingsPage /> },
 ];
 
 function App(props) {
 
     const intl = props.intl;
-    const selectedVehicule = props.globalState.selectedVehicule;
 
     const [drawerState, setDrawerState] = useState(false);
 
@@ -46,13 +48,17 @@ function App(props) {
         electron.ipcRenderer.on('update-error', (event, message) => {
             props.snackbar.error(intl.formatMessage({ id: 'update.error' }));
         });
+
+        if (props.globalState?.settings?.serialPort) {
+            props.dispatch(actions.serial.setSerialport(props.globalState.settings.serialPort));
+        }
     }, []);
 
 
-    return <Box >
-        <AppBar onClick={() => { setDrawerState(true) }} title={(selectedVehicule?.plate && selectedVehicule?.designation) ? selectedVehicule?.plate + " : " + selectedVehicule?.designation : undefined} />
-        <Box sx={{ paddingTop: '64px' }} >
-            <Container maxWidth="xl" sx={{ paddingTop: "25px" }} >
+    return <Box>
+        <AppBar onClick={() => { setDrawerState(true) }} />
+        <Box className="page"  sx={{ paddingTop: '64px' }} >
+            <Container className="page"  maxWidth="xl" sx={{ paddingTop: "25px" }} >
                 <Drawer
                     open={drawerState}
                     onClose={() => { setDrawerState(false) }}
@@ -61,7 +67,7 @@ function App(props) {
                     {routes.map(({ path, Component }) => (
                         <Route path={path} key={path} element={Component} />
                     ))}
-                </Routes>
+                    </Routes>
             </Container>
         </Box>
     </Box>;

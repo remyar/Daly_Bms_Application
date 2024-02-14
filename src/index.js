@@ -12,10 +12,19 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 
 // i18n datas
 import localeData from './locales';
+import database from "./database";
 
 const electron = require('@electron/remote');
 
 async function startApp() {
+
+    try {
+        await database.start();
+    } catch (err) {
+        console.error(err);
+    }
+
+    let settings = await database.getSettings() || {};
 
     // Define user's language. Different browsers have the user locale defined
     // on different fields on the `navigator` object, so we make sure to account
@@ -37,6 +46,7 @@ async function startApp() {
     const root = createRoot(document.getElementById('root'));
 
     let _settings = {
+        ...settings
     }
 
     root.render(
@@ -58,7 +68,7 @@ async function startApp() {
             />
             <CssBaseline />
 
-            <StoreProvider extra={{ api, electron }} globalState={{
+            <StoreProvider extra={{ api, database, electron }} globalState={{
                 settings: { installed: false, locale: "fr", ..._settings },
             }}>
                 <MemoryRouter>

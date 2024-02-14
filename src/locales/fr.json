@@ -1,3 +1,7 @@
 {
-    "fetch.error": "Une Erreur est survenue"
+    "fetch.error": "Une Erreur est survenue",
+    "url.index" : "Acceuil",
+    "url.index.desc": "Retour Acceuil",
+    "url.settings": "Settings",
+    "url.settings.desc": "Paramétrage de l'application"
 }
